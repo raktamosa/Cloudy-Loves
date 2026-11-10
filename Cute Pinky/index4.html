@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Cloudy Love</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Playball&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="gramofon.css">
+</head>
+
+<body class="gramophone-page">
+
+    <main class="gp-stage" id="gpStage">
+
+        <img class="gp-logo" src="picture/WM Deputi.png" alt="Logo Deputi">
+
+        <img class="gp-arrow" src="picture/panah.png" alt="">
+
+        <img class="gp-gramophone" src="picture/gramofon.png" alt="Gramofon">
+
+        <button class="gp-needle" id="gpNeedle" type="button" aria-label="Tap the gramophone needle">
+            <img src="picture/jarum gramofon.png" alt="">
+        </button>
+
+        <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+            <symbol id="gpCassette" viewBox="0 0 200 200">
+               
+                <circle cx="100" cy="100" r="97" fill="#4a2f1f" stroke="#7b4425" stroke-width="4"/>
+               
+                <circle cx="100" cy="100" r="86" fill="none" stroke="#6b4630" stroke-width="2"/>
+                <circle cx="100" cy="100" r="76" fill="none" stroke="#6b4630" stroke-width="2"/>
+                <circle cx="100" cy="100" r="66" fill="none" stroke="#6b4630" stroke-width="2"/>
+                <circle cx="100" cy="100" r="56" fill="none" stroke="#6b4630" stroke-width="2"/>
+                
+                <path d="M40 60 A68 68 0 0 1 90 32" fill="none" stroke="#fff6ea" stroke-opacity=".45" stroke-width="5" stroke-linecap="round"/>
+                <path d="M160 140 A68 68 0 0 1 110 168" fill="none" stroke="#fff6ea" stroke-opacity=".3" stroke-width="5" stroke-linecap="round"/>
+               
+                <circle cx="100" cy="100" r="34" fill="currentColor" stroke="#7b4425" stroke-width="3"/>
+                <path d="M100 82 v22 a6 6 0 1 1 -4 -5.6 v-14 l14 4 v-4 z" fill="#7b4425" opacity=".75" transform="translate(-4 3) scale(.95)"/>
+               
+                <circle cx="100" cy="100" r="5" fill="#4a2f1f"/>
+            </symbol>
+        </svg>
+
+        <svg class="gp-cassette gp-cassette-1" viewBox="0 0 200 200" aria-hidden="true"><use href="#gpCassette"/></svg>
+
+       
+        <div class="gp-butterflies" id="gpButterflies" aria-hidden="true"></div>
+
+        <p class="gp-hint">tap the gramophone needle</p>
+
+        <h1 class="gp-title">Among all the beautiful<br>songs you hear</h1>
+        <p class="gp-sub">Your voice is the most beautiful<br>melody I love the most.</p>
+        <p class="gp-closing">i hope that sweet melody never fades<br>playing on for as long as time allows.</p>
+
+        <a class="gp-telegram" href="https://t.me/udeputi" target="_blank" rel="noopener">
+            <svg class="gp-tg-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+            <span>already smiled? text me if you did</span>
+        </a>
+        
+    </main>
+
+  
+    <audio id="gpInstrumental" src="music/instrumental.mp3" preload="auto" loop></audio>
+
+    <script src="script.js"></script>
+    <script src="gramofon.js"></script>
+</body>
+</html>

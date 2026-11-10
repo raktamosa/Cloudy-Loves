@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Cloudy Love</title>
+
+   
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Poppins:wght@400;500;600;700;800&family=Sacramento&display=swap" rel="stylesheet">
+
+    
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .melody-page .radio-instructions { position: relative; }
+
+        .melody-page .radio-cat {
+            position: absolute;
+            right: 0;                              /* ini buat geser nya bjir JANGAN LUPA */
+            top: 0;
+            transform: translateY(-85%);           
+            width: calc(var(--dial-size) * .9);    /*ini buat ukuran kucing ya pantk jangan bingung nanti pas ada yg beli*/
+            height: auto;
+            z-index: 3;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        @media (max-width: 430px) {
+            .melody-page .radio-cat {
+                width: calc(var(--dial-size) * .75);
+                right: calc(61px - 50vw);
+                transform: translateY(-63%);
+            }
+        }
+    </style>
+</head>
+
+<body class="melody-page">
+
+
+    <header class="site-header">
+        <div class="logo-container">
+            <img src="picture/WM Deputi.png"
+                 alt="Logo Deputi"
+                 class="logo-img">
+        </div>
+    </header>
+
+
+    <main class="melody-main">
+
+        <h1 class="melody-title">
+            SHALL WE FIND A MELODY TO<br>
+            MAKE OUR STORY BLOOM?
+        </h1>
+
+<div class="volume-control">
+
+    <div class="volume-label">
+        <span>VOLUME</span>
+        <span id="volumeValue">25%</span>
+    </div>
+
+    <input
+        type="range"
+        id="volumeSlider"
+        min="0"
+        max="100"
+        value="25"
+        aria-label="Music volume"
+    >
+
+</div>
+
+        <section class="radio-section">
+
+          
+            <div class="radio-area">
+
+         
+                <div
+                    class="radio-dial"
+                    id="radioDial"
+                    role="slider"
+                    tabindex="0"
+                    aria-label="Putar knob untuk memilih lagu"
+                    aria-valuemin="-45"
+                    aria-valuemax="45"
+                    aria-valuenow="0"
+                >
+
+                    <div class="dial-outer-ring"></div>
+
+                    <div class="dial-rotor" id="dialRotor">
+                        <div class="dial-pointer"></div>
+                        <div class="dial-center"></div>
+                    </div>
+
+                    <div class="dial-gloss"></div>
+
+                    
+<div class="station-numbers">
+    <span class="station-number number-1">1</span>
+    <span class="station-number number-2">2</span>
+    <span class="station-number number-3">3</span>
+</div>
+                </div>
+            </div>
+
+            
+      
+            <div class="radio-instructions">
+
+                <img src="picture/kucing musik.png" alt="" class="radio-cat">
+
+                <p class="rotate-text">
+                    Rotate to Select</p>
+
+                <p class="station-status" id="stationStatus">
+                    the melody
+                </p>
+
+            </div>
+
+            
+
+
+        </section>
+<br>
+        <a href="index3.html"
+   class="mobile-hint next-page-link"
+   id="nextPageLink"
+   aria-disabled="true"
+   tabindex="-1">Drag the dial to tune in</a>
+    </br>
+    </main>
+
+    <audio id="song1" src="music/becky shower.mp3" preload="none"></audio>
+    <audio id="song2" src="music/hey there delilah.mp3" preload="none"></audio>
+    <audio id="song3" src="music/waiting for love - avicii.mp3" preload="none"></audio>
+
+
+    <script src="script.js"></script>
+
+</body>
+</html>

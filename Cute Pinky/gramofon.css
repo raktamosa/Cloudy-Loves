@@ -1,0 +1,358 @@
+/* css nya ketebelan bjir, biar ga pusing gua bikin css baru, LU NGAPAIN SI LIAT LIAT SAMPE SINI BJIR?
+BUKAN TEMPLATE ORANG LUAR INI, DESAIN SENDIRI CODING SENDIRI! */
+
+.gramophone-page,
+.gramophone-page * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.gramophone-page {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+
+    background: #fbe3ee url("picture/bg pink.png") center / cover no-repeat fixed;
+}
+
+.gp-stage {
+    --w: min(100vw, max(70.7vh, 480px));   /* 480px = ukuran minimum, supaya bisa di-zoom & di-scroll */
+    --u: calc(var(--w) / 1414);   /* 1 unit = 1px pada desain 1414 px */
+
+    position: relative;
+    width: var(--w);
+    aspect-ratio: 1414 / 2000;
+    overflow-x: clip;
+    margin-bottom: calc(var(--u) * 180);
+}
+
+@supports (height: 100dvh) {
+    .gramophone-page { min-height: 100dvh; }
+    .gp-stage { --w: min(100vw, max(70.7dvh, 480px)); }
+}
+
+.gp-logo {
+    position: absolute;
+    left: 5.3%;
+    top: 6.4%;
+    width: 14%;
+    height: auto;
+    z-index: 5;
+}
+
+
+.gp-arrow {
+    position: absolute;
+    left: 24.2%;
+    top: 13.3%;
+    width: 65%;
+    height: auto;
+    mix-blend-mode: multiply;
+    pointer-events: none;
+    z-index: 2;
+    transition: opacity .6s ease;
+}
+
+
+.gp-gramophone {
+    position: absolute;
+    left: 30.3%;
+    top: 3.75%;
+    width: 65.6%;
+    height: auto;
+    z-index: 1;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+
+.gp-needle {
+    position: absolute;
+    left: 66%;
+    top: 31.2%;
+    width: 19%;
+    z-index: 4;
+
+    border: 0;
+    background: none;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+
+    transform-origin: 86% 8%;
+    transition: transform .8s cubic-bezier(.45, .05, .25, 1);
+}
+
+.gp-needle img {
+    display: block;
+    width: 100%;
+    height: auto;
+    pointer-events: none;
+    -webkit-user-drag: none;
+}
+
+
+.gp-needle::after {
+    left: 80%;
+    content: "";
+    position: absolute;
+    inset: -35%;
+}
+
+.gp-needle:focus-visible {
+    outline: 3px dashed rgba(123, 68, 37, .6);
+    outline-offset: 6px;
+}
+
+
+.gp-hint,
+.gp-title,
+.gp-sub,
+.gp-closing {
+    position: absolute;
+    text-align: center;
+    z-index: 3;
+    transition: opacity .7s ease;
+}
+
+
+.gp-hint {
+    left: 16%;
+    top: 51%;
+    width: 36.5%;
+    font-family: "Playball", cursive;
+    font-size: calc(var(--u) * 62);
+    line-height: 1.45;
+    color: #9c6e5c;
+}
+
+
+.gp-title {
+    left: 11.5%;
+    top: 58%;
+    width: 50%;
+    font-family: "Lilita One", sans-serif;
+    font-weight: 400;
+    font-size: calc(var(--u) * 50);
+    line-height: 1.38;
+    letter-spacing: .02em;
+    text-transform: uppercase;
+    color: #7b4425;
+
+    opacity: 0;
+}
+
+.gp-sub {
+    left: 36%;
+    top: 68%;
+    width: 53%;
+    font-family: "Playball", cursive;
+    font-size: calc(var(--u) * 52);
+    line-height: 1.58;
+    color: #7b4425;
+
+    opacity: 0;
+}
+
+
+.gp-closing {
+    left: 11.5%;
+    top: 79%;
+    width: 77%;
+    font-family: "Lilita One", sans-serif;
+    font-size: calc(var(--u) * 46);
+    line-height: 1.38;
+    letter-spacing: .02em;
+    text-transform: uppercase;
+    color: #7b4425;
+
+    opacity: 0;
+}
+
+
+.gp-telegram {
+    position: absolute;
+    left: 50%;
+    top: 100%;
+    z-index: 3;
+    transform: translateX(-50%);
+
+    display: inline-flex;
+    align-items: center;
+    gap: calc(var(--u) * 22);
+    padding: calc(var(--u) * 22) calc(var(--u) * 48) calc(var(--u) * 22) calc(var(--u) * 30);
+    border-radius: 999px;
+    white-space: nowrap;
+    text-decoration: none;
+
+    font-family: "Playball", cursive;
+    font-size: calc(var(--u) * 46);
+    line-height: 1.2;
+    color: #fff6ea;
+    background: #7b4425;
+    box-shadow: 0 calc(var(--u) * 8) calc(var(--u) * 18) rgba(92, 59, 37, .3);
+    -webkit-tap-highlight-color: transparent;
+
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .7s ease, background .2s ease;
+}
+
+.gp-telegram:hover,
+.gp-telegram:focus-visible {
+    background: #2aabee;
+}
+
+.gp-tg-icon {
+    width: calc(var(--u) * 64);
+    height: calc(var(--u) * 64);
+    flex: none;
+}
+
+.gp-stage.played .gp-needle {
+    transform: scaleX(-1);
+}
+
+.gp-stage.played .gp-arrow,
+.gp-stage.played .gp-hint {
+    opacity: 0;
+}
+
+.gp-stage.played .gp-title,
+.gp-stage.played .gp-sub {
+    opacity: 1;
+    transition-delay: .5s;
+}
+
+.gp-stage.played .gp-sub {
+    transition-delay: .9s;
+}
+
+
+.gp-stage.played .gp-closing {
+    opacity: 1;
+    transition-delay: 1.4s;
+}
+
+.gp-stage.played .gp-telegram {
+    opacity: 1;
+    pointer-events: auto;
+    transition-delay: 1.9s, 0s;
+}
+
+
+.gp-cassette {
+    position: absolute;
+    left: 61.5%;
+    top: 31.3%;
+    width: 17%;
+    height: auto;
+    z-index: 3;
+    opacity: 0;
+    pointer-events: none;
+    filter: drop-shadow(0 calc(var(--u) * 8) calc(var(--u) * 14) rgba(92, 59, 37, .25));
+}
+
+
+.gp-cassette-1 { color: #f6b3c8; --dx: calc(var(--u) * -120); --rot: -540deg; --delay: .45s; }
+
+.gp-stage.played .gp-cassette {
+    animation: gpCassetteFly 2.8s cubic-bezier(.2, .6, .3, 1) var(--delay) forwards;
+}
+
+@keyframes gpCassetteFly {
+    0% {
+        opacity: 0;
+        transform: perspective(calc(var(--u) * 1400)) translate(0, 0) scale(.5) rotateX(75deg) rotateZ(0deg);
+    }
+    15% {
+        opacity: 1;
+    }
+    50% {
+        transform: perspective(calc(var(--u) * 1400)) translate(calc(var(--dx) * -.5), calc(var(--u) * -450)) scale(.9) rotateX(75deg) rotateZ(calc(var(--rot) * .5));
+    }
+    100% {
+        opacity: 0;
+        transform: perspective(calc(var(--u) * 1400)) translate(var(--dx), calc(var(--u) * -900)) scale(1.05) rotateX(75deg) rotateZ(var(--rot));
+    }
+}
+
+.gp-title,
+.gp-sub,
+.gp-closing {
+    text-shadow:
+        0 0 calc(var(--u) * 16) rgba(255, 240, 246, .95),
+        0 0 calc(var(--u) * 6) rgba(255, 240, 246, .9);
+}
+
+.gp-butterflies {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.gp-bfly {
+    position: absolute;
+    left: 50%;
+    top: 68%;
+    width: calc(var(--u) * var(--s));
+    opacity: 0;
+    will-change: transform, opacity;
+}
+
+.gp-bfly svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+    filter: drop-shadow(0 calc(var(--u) * 4) calc(var(--u) * 8) rgba(123, 68, 37, .18));
+}
+
+.gp-wing-shape {
+    fill: var(--c);
+    stroke: rgba(123, 68, 37, .55);
+    stroke-width: 2.5;
+    stroke-linejoin: round;
+}
+
+.gp-wing {
+    transform-origin: 50px 40px;
+}
+
+.gp-stage.played .gp-wing {
+    animation: gpFlap var(--flap) ease-in-out infinite alternate;
+}
+
+.gp-stage.played .gp-bfly {
+    animation: gpButterflyFly var(--dur) linear var(--delay) forwards;
+}
+
+@keyframes gpFlap {
+    from { transform: scaleX(1); }
+    to   { transform: scaleX(.22); }
+}
+
+@keyframes gpButterflyFly {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) translate(0, 0) rotate(var(--rot)) scale(.2);
+    }
+    12% {
+        opacity: .9;
+    }
+    30% {
+        transform: translate(-50%, -50%) translate(calc(var(--u) * var(--x1)), calc(var(--u) * var(--y1))) rotate(var(--rot)) scale(.7);
+    }
+    60% {
+        transform: translate(-50%, -50%) translate(calc(var(--u) * var(--x2)), calc(var(--u) * var(--y2))) rotate(var(--rot)) scale(.95);
+    }
+    85% {
+        opacity: .85;
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) translate(calc(var(--u) * var(--x3)), calc(var(--u) * var(--y3))) rotate(var(--rot)) scale(1);
+    }
+}
