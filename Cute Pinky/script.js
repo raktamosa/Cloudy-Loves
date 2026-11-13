@@ -773,3 +773,185 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
 })();
+
+(function () {
+  "use strict";
+
+  const pair = document.querySelector(".pair-2");
+  if (!pair) return;
+
+  const page = pair.querySelector(".cal-page");
+  const img = pair.querySelector(".cal-img");
+  if (!page || !img) return;
+
+  
+  const STRIPS     = 160;     // ukuran gulungan
+  const HINGE      = 0.25;   // titik gulungan berhenti (13% dari atas)
+  const ROLL_R     = 0.08;  // jari-jari gulungan
+  const THICK      = 0.0006; // tebal kertas 
+  const RAMP       = 8;      // jumlah strip untuk transisi halus lurus -> melengkung
+  const OPEN_MS    =1200    ;   // durasi menggulung ke atas
+  const CLOSE_MS   = 1000;   // durasi menutup lagi
+  const BACK_COLOR = "#eab4c0"; // warna punggung kertas
+
+  const canHover = window.matchMedia("(hover: hover)").matches;
+  const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+  const easeOpen  = (u) => 1 - Math.pow(1 - u, 3);
+  const easeClose = (u) => (u < 0.5 ? 4 * u * u * u : 1 - Math.pow(-2 * u + 2, 3) / 2);
+  let root = null;      
+  let strips = [];       
+  let H = 0;
+  let K = 0;            
+  let d = 0;             
+  let e = 0;             
+
+  let progress = 0;      
+  let anim = null;       
+  let raf = 0;
+
+
+  function shape(el, src, i, sh) {
+    const s = el.style;
+    s.webkitMaskImage = s.maskImage = 'url("' + src + '")';
+    s.webkitMaskSize = s.maskSize = "100% " + H + "px";
+    s.webkitMaskPosition = s.maskPosition = "0 " + -(i * sh) + "px";
+    s.webkitMaskRepeat = s.maskRepeat = "no-repeat";
+  }
+
+  function build() {
+    const w = img.clientWidth;
+    const h = img.clientHeight;
+    if (!w || !h) return false;
+
+    if (root) root.remove();
+    H = h;
+    const sh = H / STRIPS;
+    K = Math.round(HINGE * STRIPS);
+    d = sh / (H * ROLL_R);
+    e = H * THICK;
+
+    root = document.createElement("div");
+    root.className = "cal-roll";
+    strips = [];
+
+    const src = img.currentSrc || img.src;
+    let parent = root;
+
+    for (let i = 0; i < STRIPS; i++) {
+      const el = document.createElement("div");
+      el.className = "cal-strip";
+      el.style.top = (i === 0 ? 0 : sh) + "px";
+      el.style.height = (i === STRIPS - 1 ? sh : sh + 1) + "px"; 
+
+      const front = document.createElement("div");
+      front.className = "cal-face cal-front";
+      front.style.backgroundImage = 'url("' + src + '")';
+      front.style.backgroundSize = "100% " + H + "px";
+      front.style.backgroundPosition = "0 " + -(i * sh) + "px";
+      const fShade = document.createElement("i");
+      shape(fShade, src, i, sh);  
+      front.appendChild(fShade);
+
+      const back = document.createElement("div");
+      back.className = "cal-face cal-back";
+      back.style.background = BACK_COLOR;
+      shape(back, src, i, sh);    
+      const bShade = document.createElement("i");
+      back.appendChild(bShade);
+
+      el.appendChild(front);
+      el.appendChild(back);
+      parent.appendChild(el);
+      parent = el;
+
+      strips.push({ el, fShade, bShade });
+    }
+
+    page.appendChild(root);
+    apply(progress);
+    return true;
+  }
+
+  function apply(p) {
+    if (!strips.length) return;
+
+    const fEnd = K + 1 - RAMP;           
+    const front = STRIPS - (STRIPS - fEnd) * p; 
+    let cum = 0;
+
+    for (let i = 0; i < STRIPS; i++) {
+      const wgt = i < K ? 0 : clamp((i + 1 - front) / RAMP, 0, 1);
+      const a = d * wgt;
+      cum += a;
+
+      const s = strips[i];
+      s.el.style.transform =
+        "translateZ(" + (-e * wgt).toFixed(3) + "px) rotateX(" + a.toFixed(4) + "rad)";
+
+      const sn = Math.sin(cum), cs = Math.cos(cum);
+      const lit = 0.5 * sn + 0.85 * cs;
+      s.fShade.style.opacity = (0.2 * Math.max(0, 0.85 - lit)).toFixed(3);
+      s.bShade.style.opacity = (0.2 * Math.max(0, 0.85 + lit)).toFixed(3);
+    }
+
+    const rolling = p > 0.0005;
+    page.classList.toggle("rolling", rolling);
+  }
+
+  function tick(now) {
+    if (!anim) return;
+    const u = clamp((now - anim.start) / anim.dur, 0, 1);
+    const f = anim.to > anim.from ? easeOpen : easeClose;
+    progress = anim.from + (anim.to - anim.from) * f(u);
+    apply(progress);
+    if (u < 1) {
+      raf = requestAnimationFrame(tick);
+    } else {
+      progress = anim.to;
+      apply(progress);
+      anim = null;
+    }
+  }
+
+  function goTo(target) {
+    if (!root && !build()) return;
+    if (anim && anim.to === target) return;
+    if (!anim && progress === target) return;
+    cancelAnimationFrame(raf);
+    const span = Math.abs(target - progress);
+    anim = {
+      from: progress,
+      to: target,
+      start: performance.now(),
+      dur: Math.max(120, span * (target > progress ? OPEN_MS : CLOSE_MS)),
+    };
+    raf = requestAnimationFrame(tick);
+  }
+
+  function isOpen() {
+    return pair.classList.contains("active") || (canHover && pair.matches(":hover"));
+  }
+  const sync = () => goTo(isOpen() ? 1 : 0);
+
+  if (canHover) {
+    pair.addEventListener("mouseenter", sync);
+    pair.addEventListener("mouseleave", sync);
+  }
+  pair.addEventListener("click", () => setTimeout(sync, 0));
+  new MutationObserver(sync).observe(pair, { attributes: true, attributeFilter: ["class"] });
+
+  let resizeT;
+  window.addEventListener("resize", () => {
+    clearTimeout(resizeT);
+    resizeT = setTimeout(() => {
+      if (!anim) build();
+    }, 150);
+  });
+
+  function init() {
+    build();
+  }
+  if (img.complete && img.naturalWidth) init();
+  else img.addEventListener("load", init);
+  window.addEventListener("load", () => { if (!root) build(); });
+})();
